@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Pet</title>
+    <style>
+        body {
+            background: url('imagesallanimal.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom right, #87CEEB, #FFB6C1);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .pet img {
+            width: 200px;
+            height: auto;
+            margin-top: 10px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats, .actions {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #status {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .progress-bar {
+            width: 80%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 10px auto;
+            height: 25px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 25px;
+            color: white;
+            font-weight: bold;
+            position: absolute;
+        }
+
+        .happiness { background-color: #f39c12; }
+        .energy { background-color: #3498db; }
+        .health { background-color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Virtual Pet</h1>
+        <div id="name-input">
+            <input type="text" id="animal-name" placeholder="Enter animal name (e.g., Dog, Cat)">
+            <button onclick="startGame()">Start</button>
+        </div>
+        <div class="pet" style="display: none;">
+            <h2 id="pet-title">Your Pet</h2>
+            <img src="imagesdogg.jpg" alt="Virtual Pet" id="pet-image">
+            <p id="status">Status: Happy</p>
+        </div>
+        <div class="stats" style="display: none;">
+            <p>Happiness</p>
+            <div class="progress-bar">
+                <div class="progress-fill happiness" id="happiness-bar" style="width: 100%;">100%</div>
+            </div>
+            <p>Energy</p>
+            <div class="progress-bar">
+                <div class="progress-fill energy" id="energy-bar" style="width: 100%;">100%</div>
+            </div>
+            <p>Health</p>
+            <div class="progress-bar">
+                <div class="progress-fill health" id="health-bar" style="width: 100%;">100%</div>
+            </div>
+        </div>
+        <div class="actions" style="display: none;">
+            <button onclick="feedPet()">Feed</button>
+            <button onclick="playWithPet()">Play</button>
+            <button onclick="restPet()">Rest</button>
+        </div>
+    </div>
+    <script>
+        let happiness = 100;
+        let energy = 100;
+        let health = 100;
+        let animalName = "";
+
+        function startGame() {
+            const inputAnimal = document.getElementById("animal-name").value.trim().toLowerCase();
+            const petImage = document.getElementById("pet-image");
+
+            if (!inputAnimal) {
+                alert("Please enter an animal name!");
+                return;
+            }
+
+            animalName = inputAnimal;
+            document.getElementById("pet-title").textContent = `Your ${capitalize(animalName)}`;
+            document.getElementById("name-input").style.display = "none";
+            document.querySelector(".pet").style.display = "block";
+            document.querySelector(".stats").style.display = "block";
+            document.querySelector(".actions").style.display = "block";
+
+            // Set default image based on the animal name
+            switch (animalName) {
+                case "dog":
+                    petImage.src = "imagesdogg.jpg";
+                    break;
+                case "cat":
+                    petImage.src = "imagecattt.jpg";
+                    break;
+                case "rabbit":
+                    petImage.src = "imagesrabbit.jpg";
+                    break;
+                default:
+                    petImage.src = "imagesallanimal.jpg";
+            }
+
+            updateStats();
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function updateStats() {
+            const happinessBar = document.getElementById("happiness-bar");
+            const energyBar = document.getElementById("energy-bar");
+            const healthBar = document.getElementById("health-bar");
+
+            happinessBar.style.width = `${happiness}%`;
+            happinessBar.textContent = `${happiness}%`;
+
+            energyBar.style.width = `${energy}%`;
+            energyBar.textContent = `${energy}%`;
+
+            healthBar.style.width = `${health}%`;
+            healthBar.textContent = `${health}%`;
+
+            const status = document.getElementById("status");
+
+            if (health <= 0) {
+                status.textContent = `${capitalize(animalName)} is unresponsive. Game Over!`;
+                return;
+            }
+
+            if (happiness < 50 || energy < 50) {
+                status.textContent = "Status: Needs Attention!";
+                status.style.color = "red";
+            } else {
+                status.textContent = "Status: Happy";
+                status.style.color = "green";
+            }
+        }
+
+        function feedPet() {
+            if (health > 0) {
+                energy = Math.min(energy + 20, 100);
+                happiness = Math.min(happiness + 10, 100);
+                updateStats();
+            }
+        }
+
+        function playWithPet() {
+            if (health > 0) {
+                if (energy >= 10) {
+                    happiness = Math.min(happiness + 20, 100);
+                    energy -= 10;
+                } else {
+                    alert("Not enough energy to play!");
+                }
+                updateStats();
+            }
+        }
+
+        function restPet() {
+            if (health > 0) {
+                energy = Math.min(energy + 30, 100);
+                health = Math.min(health + 10, 100);
+                updateStats();
+            }
+        }
+
+        setInterval(() => {
+            if (health > 0) {
+                happiness = Math.max(happiness - 1, 0);
+                energy = Math.max(energy - 1, 0);
+                if (happiness <= 30 || energy <= 30) {
+                    health = Math.max(health - 1, 0);
+                }
+                updateStats();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
