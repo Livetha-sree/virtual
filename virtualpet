@@ -6,18 +6,24 @@
     <title>Virtual Pet</title>
     <style>
         body {
-            background: url('imagesallanimal.jpg') no-repeat center center fixed;
-            background-size: cover;
             font-family: Arial, sans-serif;
             text-align: center;
-            background: linear-gradient(to bottom right, #87CEEB, #FFB6C1);
+            background: url('istockphoto-618635454-2048x2048.jpg') no-repeat center center fixed; /* Replace with your image path */
+            background-size: cover;
             margin: 0;
             padding: 0;
+            color: #fff;
         }
 
         .container {
             margin-top: 20px;
             padding: 20px;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
         .pet img {
@@ -41,6 +47,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         button:hover {
@@ -49,7 +57,8 @@
 
         #status {
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.5em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
         }
 
         .progress-bar {
@@ -75,30 +84,46 @@
         .happiness { background-color: #f39c12; }
         .energy { background-color: #3498db; }
         .health { background-color: #2ecc71; }
+
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Virtual Pet</h1>
+        <h1><strong>Virtual Pet</strong></h1>
         <div id="name-input">
-            <input type="text" id="animal-name" placeholder="Enter animal name (e.g., Dog, Cat)">
+            <input type="text" id="animal-name" placeholder="Enter animal name (e.g., Dog, Cat)" style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;">
             <button onclick="startGame()">Start</button>
         </div>
         <div class="pet" style="display: none;">
-            <h2 id="pet-title">Your Pet</h2>
+            <h2 id="pet-title"><strong>Your Pet</strong></h2>
             <img src="imagesdogg.jpg" alt="Virtual Pet" id="pet-image">
-            <p id="status">Status: Happy</p>
+            <p id="status"><strong>Status:</strong> Happy</p>
         </div>
         <div class="stats" style="display: none;">
-            <p>Happiness</p>
+            <p><strong>Happiness</strong></p>
             <div class="progress-bar">
                 <div class="progress-fill happiness" id="happiness-bar" style="width: 100%;">100%</div>
             </div>
-            <p>Energy</p>
+            <p><strong>Energy</strong></p>
             <div class="progress-bar">
                 <div class="progress-fill energy" id="energy-bar" style="width: 100%;">100%</div>
             </div>
-            <p>Health</p>
+            <p><strong>Health</strong></p>
             <div class="progress-bar">
                 <div class="progress-fill health" id="health-bar" style="width: 100%;">100%</div>
             </div>
@@ -170,7 +195,7 @@
             const status = document.getElementById("status");
 
             if (health <= 0) {
-                status.textContent = `${capitalize(animalName)} is unresponsive. Game Over!`;
+                status.textContent = `${capitalize(animalName)} is unresponsive. <strong>Game Over!</strong>`;
                 return;
             }
 
@@ -224,3 +249,4 @@
     </script>
 </body>
 </html>
+
